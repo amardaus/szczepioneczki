@@ -29,8 +29,6 @@ def findVaccine():
     if nexttime_element.has_attr('datetime'):
         nexttime = nexttime_element['datetime']
     currenttime = datetime.now()
-    # print(currenttime.hour)
-    # print(nexttime) # convert to datetime
 
     rows = soup.find('table', {'id': 'szczepienia'}).find('tbody').find_all('tr')
 
@@ -44,15 +42,11 @@ def findVaccine():
             vr.decompose()
         vdate = cols[1].text
         
-        
-        #print(format_datetime(dt.datetime.today(), locale='pl_PL'))
         months = ["stycznia", "lutego", "marca", "kwietnia", "maja", "czerwca", "lipca", "sierpnia", "września", "października", "listopada", "grudnia"]
         
         vdatenum = unidecode.unidecode(vdate).replace(" ", "")
-        #vdatenum = ascii(vdatenum)
         i = 1
         for month in months:
-            #vdatenum = vdate.replace(month, "." + str(i))
             if(i < 10):
                 vdatenum = vdatenum.replace(month, ".0" + str(i))
             else:
@@ -68,7 +62,7 @@ def findVaccine():
         if days < days:
             if vtype == 'Pfizer' and vcity == 'Kraków':
                 print('Znaleziono szczepienie \t [' + vcity + ', ' + vdate + ']')
-                #playsound('alert.mp3')
+                playsound('alert.mp3')
 
     driver.quit()
 
@@ -86,14 +80,10 @@ def checkTime(sc):
     
 
     diff = (now-lt).seconds
-    #if diff < 60:
-    #    findVaccine()
-    findVaccine()
+    if diff < 60:
+        findVaccine()
     
     s.enter(seconds, 1, checkTime, (sc,))
-    #print(str(lt.hour) + ":" + str(lt.minute))
-    #print(str(nt.hour) + ":" + str(nt.minute))
-    #print(str(now.hour) + ":" + str(now.minute))
 
 s.enter(seconds, 1, checkTime, (s,))
 s.run()
